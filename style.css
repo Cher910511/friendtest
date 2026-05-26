@@ -360,7 +360,7 @@ body{
   .et-sub{font-size:12px}
   .envelope-stamps{gap:10px;margin-top:14px}
   .estamp{width:42px;height:42px;font-size:11px;letter-spacing:1px}
-  .exam-meta{grid-template-columns:1fr}
+
 
   /* 答题 */
   .quiz-stage{padding:8px}

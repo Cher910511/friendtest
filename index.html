@@ -141,7 +141,7 @@
       <!-- 底部导航 -->
       <div class="paper-footer">
         <div class="pf-nav">
-          <button @click="prevQ" :disabled="currentIdx === 0" class="btn-outline">◀ 上一题</button>
+          <button @click="prevQ" :disabled="currentIdx === 0" class="btn-outline">上一题</button>
           <div class="pf-dots">
             <span v-for="(_, qi) in questions" :key="qi"
                   class="pfd-dot"
@@ -149,7 +149,7 @@
                   @click="currentIdx = qi">{{ qi + 1 }}</span>
           </div>
           <button v-if="currentIdx < questions.length - 1"
-                  @click="nextQ" class="btn-primary">下一题 ▶</button>
+                  @click="nextQ" class="btn-primary">下一题</button>
           <button v-else @click="submitExam"
                   :disabled="answers.some(a => a < 0)"
                   class="btn-submit">交 卷</button>
