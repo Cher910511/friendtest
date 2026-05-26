@@ -32,7 +32,7 @@
     <div class="envelope">
       <div class="envelope-seal-top">绝 密 ★ 启用前</div>
       <div class="envelope-body">
-        <div class="envelope-badge">中国朋友关系研究院 命题</div>
+        <div class="envelope-badge" @click="secretTap">中国朋友关系研究院 命题</div>
         <h1 class="envelope-title">
           <span class="et-year">2026 年</span>
           <span class="et-main">易 璐</span>
@@ -207,6 +207,56 @@
     <div class="cert-actions">
       <button @click="retry" class="btn-outline">再考一次</button>
       <button @click="shareCert" class="btn-primary">截图 / 分享证书</button>
+    </div>
+  </div>
+
+  <!-- ==================== 统计页 ==================== -->
+  <div v-if="stage==='stats'" class="stage stats-stage">
+
+    <div class="stats-panel">
+      <div class="stats-header">
+        <h2>易璐全国统一考试 · 成绩统计</h2>
+        <p>共 <strong>{{ results.length }}</strong> 人参加考试</p>
+      </div>
+
+      <!-- 排行榜 -->
+      <div class="stats-section">
+        <h3>🏆 成绩排行榜</h3>
+        <div class="stats-leaderboard">
+          <div v-for="(r, i) in resultsSorted" :key="i"
+               class="sl-row" :class="{ 'sl-me': r.name === lastTaker }">
+            <span class="sl-rank">{{ i + 1 }}</span>
+            <span class="sl-avatar">{{ r.name[0] }}</span>
+            <span class="sl-name">{{ r.name }}</span>
+            <span class="sl-rank-badge" :style="{color: r.rankInfo.color}">{{ r.rankInfo.rank }}</span>
+            <span class="sl-score">{{ r.score }}分</span>
+            <span class="sl-time">{{ r.time }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 每题分布 -->
+      <div class="stats-section">
+        <h3>📊 每题选项分布</h3>
+        <div v-for="(q, qi) in questionStats" :key="qi" class="sq-card">
+          <div class="sq-q">Q{{ qi + 1 }}. {{ q.q.replace('易璐','').slice(0, 28) }}...</div>
+          <div class="sq-bars">
+            <div v-for="(opt, oi) in q.dist" :key="oi" class="sq-bar-row">
+              <span class="sq-letter">{{ String.fromCharCode(65 + oi) }}</span>
+              <div class="sq-bar-track">
+                <div class="sq-bar-fill" :style="{width: q.total ? (opt / q.total * 100) + '%' : '0%', background: q.correctIdx === oi ? '#16a34a' : '#e0d8c8'}"></div>
+              </div>
+              <span class="sq-pct">{{ q.total ? Math.round(opt / q.total * 100) : 0 }}%</span>
+              <span v-if="q.correctIdx === oi" class="sq-check">✓</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="stats-actions">
+        <button @click="clearStats" class="btn-outline">清空记录</button>
+        <button @click="stage='cover'" class="btn-primary">返回首页</button>
+      </div>
     </div>
   </div>
 

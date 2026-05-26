@@ -136,7 +136,36 @@ createApp({
     const questions = ref([])
     const correctIdx = ref([])
     const score = ref(0)
-    const trapFled = ref([])         // 陷阱题中已逃跑的选项索引（B/C/D）
+    const trapFled = ref([])
+    const STORAGE_KEY = 'yilu_exam_results'
+    const results = ref(loadResults())  // 历史成绩
+    const lastTaker = ref('')
+
+    function loadResults() {
+      try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [] }
+      catch (_) { return [] }
+    }
+    function saveResults() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(results.value))
+    }
+
+    // ---- 排行榜（按分数降序） ----
+    const resultsSorted = computed(() => {
+      return [...results.value].sort((a, b) => b.score - a.score)
+    })
+
+    // ---- 每题统计 ----
+    const questionStats = computed(() => {
+      return QUESTION_POOL.map((q, qi) => {
+        const dist = new Array(q.options.length).fill(0)
+        results.value.forEach(r => {
+          if (r.answers[qi] !== undefined && r.answers[qi] >= 0) {
+            dist[r.answers[qi]]++
+          }
+        })
+        return { q: q.q, dist, total: dist.reduce((s, v) => s + v, 0), correctIdx: 0 }
+      })
+    })
 
     // ---- 当前题目 ----
     const currentQuestion = computed(() => {
@@ -206,10 +235,20 @@ createApp({
       answers.value.forEach((userAns, qi) => {
         if (userAns === correctIdx.value[qi]) correctCount++
       })
-      console.log('答题:', answers.value)
-      console.log('答案:', correctIdx.value)
-      console.log('每题对错:', answers.value.map((a, i) => a === correctIdx.value[i]))
       score.value = Math.round((correctCount / questions.value.length) * 100)
+      // 保存成绩
+      const now = new Date()
+      const timeStr = `${now.getMonth()+1}/${now.getDate()} ${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}`
+      results.value.push({
+        name: takerName.value,
+        score: score.value,
+        answers: [...answers.value],
+        rankInfo: RANK_TABLE.find(r => score.value >= r.min && score.value <= r.max),
+        time: timeStr,
+      })
+      if (results.value.length > 50) results.value = results.value.slice(-50)
+      saveResults()
+      lastTaker.value = takerName.value
       stage.value = 'cert'
     }
 
@@ -232,6 +271,29 @@ createApp({
       }
     }
 
+    // ---- 清除统计 ----
+    function clearStats() {
+      if (confirm('确定要清空所有考试成绩记录吗？')) {
+        results.value = []
+        saveResults()
+      }
+    }
+
+    // ---- 暗门：三击徽章进入统计 ----
+    let tapCount = 0
+    let tapTimer = null
+    function secretTap() {
+      tapCount++
+      if (tapCount >= 3) {
+        tapCount = 0
+        clearTimeout(tapTimer)
+        stage.value = 'stats'
+        return
+      }
+      clearTimeout(tapTimer)
+      tapTimer = setTimeout(() => { tapCount = 0 }, 1500)
+    }
+
     // ---- 中文数字 ----
     const CN_NUMS = ['零','一','二','三','四','五','六','七','八','九','十']
     function toChineseNum(n) {
@@ -245,9 +307,10 @@ createApp({
       stage, takerName,
       currentIdx, answers, questions, score,
       currentQuestion, rankInfo, trapFled,
+      results, resultsSorted, questionStats, lastTaker,
       startQuiz, prevQ, nextQ, submitExam,
-      retry, shareCert, toChineseNum,
-      handleTrapClick,
+      retry, shareCert, toChineseNum, clearStats,
+      secretTap, handleTrapClick,
     }
   }
 }).mount('#app')

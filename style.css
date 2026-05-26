@@ -414,6 +414,61 @@ body{
   .seal-line{display:none}
 }
 
+/* ================================================
+   STATS — 统计页
+   ================================================ */
+.stats-stage{background:#f0ebe0;padding:20px}
+.stats-panel{max-width:620px;width:100%}
+.stats-header{text-align:center;margin-bottom:24px}
+.stats-header h2{font-size:20px;font-weight:900;color:#8b0000;letter-spacing:3px}
+.stats-header p{font-size:14px;color:#888;margin-top:6px}
+.stats-header strong{color:#8b0000;font-size:20px}
+
+.stats-section{margin-bottom:24px}
+.stats-section h3{font-size:15px;font-weight:700;color:#444;margin-bottom:12px;letter-spacing:2px}
+
+/* 排行榜 */
+.stats-leaderboard{display:flex;flex-direction:column;gap:6px}
+.sl-row{
+  display:flex;align-items:center;gap:12px;
+  padding:10px 14px;background:#fffef9;border:1px solid #e0d8c8;
+  border-radius:6px;
+}
+.sl-row.sl-me{background:#fff5f5;border-color:#c62828}
+.sl-rank{font-size:16px;font-weight:900;color:#999;min-width:24px;text-align:center}
+.sl-avatar{
+  width:30px;height:30px;border-radius:50%;background:#8b0000;
+  color:#fff;display:flex;align-items:center;justify-content:center;
+  font-size:14px;font-weight:700;flex-shrink:0;
+}
+.sl-name{font-size:15px;font-weight:600;flex:1;min-width:0}
+.sl-rank-badge{font-size:12px;font-weight:700;white-space:nowrap}
+.sl-score{font-size:16px;font-weight:900;color:#8b0000;min-width:36px;text-align:right}
+.sl-time{font-size:11px;color:#bbb;min-width:40px;text-align:right}
+
+/* 每题分布 */
+.sq-card{
+  background:#fffef9;border:1px solid #e0d8c8;
+  border-radius:6px;padding:12px 14px;margin-bottom:8px;
+}
+.sq-q{font-size:14px;font-weight:600;color:#444;margin-bottom:10px}
+.sq-bars{display:flex;flex-direction:column;gap:4px}
+.sq-bar-row{display:flex;align-items:center;gap:8px;font-size:13px}
+.sq-letter{font-weight:700;color:#888;min-width:16px}
+.sq-bar-track{flex:1;height:16px;background:#f0ece4;border-radius:4px;overflow:hidden}
+.sq-bar-fill{height:100%;border-radius:4px;transition:width .5s;min-width:2px}
+.sq-pct{font-size:12px;color:#888;min-width:32px;text-align:right}
+.sq-check{color:#16a34a;font-weight:700;font-size:14px}
+
+/* 统计按钮 */
+.stats-actions{display:flex;gap:12px;justify-content:center;margin-top:24px}
+.btn-stats-link{
+  display:block;margin:14px auto 0;background:none;border:none;
+  color:#8b0000;font-size:14px;cursor:pointer;font-family:inherit;
+  text-decoration:underline;letter-spacing:1px;transition:opacity .2s;
+}
+.btn-stats-link:hover{opacity:.7}
+
 @media print{
   body{background:#fff}
   .stage{display:none!important}
