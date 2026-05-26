@@ -124,7 +124,7 @@ const RANK_TABLE = [
 // ================================================
 // Vue App
 // ================================================
-const { createApp, ref, computed } = Vue
+const { createApp, ref, computed, watch } = Vue
 
 createApp({
   setup() {
@@ -176,6 +176,10 @@ createApp({
     const rankInfo = computed(() => {
       return RANK_TABLE.find(r => score.value >= r.min && score.value <= r.max)
     })
+
+    // ---- 切换页面 / 题目时滚到顶部 ----
+    watch(stage, () => { window.scrollTo(0, 0) })
+    watch(currentIdx, () => { window.scrollTo(0, 0) })
 
     // ---- 开始考试 ----
     function startQuiz() {
