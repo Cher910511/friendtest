@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>易璐全国统一考试 - 绝密试卷</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- 全局水印 -->
+<div class="watermark-layer">
+  <div class="watermark-text">仅供娱乐 不要较真</div>
+  <div class="watermark-text">仅供娱乐 不要较真</div>
+  <div class="watermark-text">仅供娱乐 不要较真</div>
+  <div class="watermark-text">仅供娱乐 不要较真</div>
+  <div class="watermark-text">仅供娱乐 不要较真</div>
+  <div class="watermark-text">仅供娱乐 不要较真</div>
+  <div class="watermark-text">仅供娱乐 不要较真</div>
+  <div class="watermark-text">仅供娱乐 不要较真</div>
+  <div class="watermark-text">仅供娱乐 不要较真</div>
+  <div class="watermark-text">仅供娱乐 不要较真</div>
+  <div class="watermark-text">仅供娱乐 不要较真</div>
+  <div class="watermark-text">仅供娱乐 不要较真</div>
+</div>
+
+<div id="app">
+
+  <!-- ==================== 封面 ==================== -->
+  <div v-if="stage==='cover'" class="stage cover-stage">
+
+    <div class="envelope">
+      <div class="envelope-seal-top">绝 密 ★ 启用前</div>
+      <div class="envelope-body">
+        <div class="envelope-badge">中国朋友关系研究院 命题</div>
+        <h1 class="envelope-title">
+          <span class="et-year">2026 年</span>
+          <span class="et-main">易 璐</span>
+          <span class="et-main-sub">全国统一考试</span>
+          <span class="et-sub">（朋友关系鉴定卷 · A卷）</span>
+        </h1>
+        <div class="envelope-doc-id">试卷编号：FR-YL-2026-001</div>
+        <div class="envelope-stamps">
+          <div class="estamp estamp-red">绝密</div>
+          <div class="estamp estamp-blue">机密</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="exam-meta">
+      <div class="meta-item"><span>考试对象</span>易璐</div>
+      <div class="meta-item"><span>命题单位</span>中国朋友关系研究院</div>
+      <div class="meta-item"><span>考试时长</span>约 2 分钟</div>
+      <div class="meta-item"><span>满分</span>100 分</div>
+    </div>
+
+    <div class="new-exam-panel">
+      <label class="nel-label">请输入<strong>你的名字</strong>，开始考试：</label>
+      <div class="nel-row">
+        <input type="text" v-model="takerName" @keydown.enter="startQuiz"
+               placeholder="你的名字" maxlength="10" autocomplete="off"
+               class="exam-input">
+        <button @click="startQuiz" :disabled="!takerName.trim()" class="btn-seal">
+          启封试卷
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 答题阶段 ==================== -->
+  <div v-if="stage==='quiz'" class="stage quiz-stage">
+
+    <div class="paper">
+      <!-- 试卷头 -->
+      <div class="paper-header">
+        <div class="ph-left">
+          <div class="ph-secret">绝密 ★ 启用前</div>
+          <div class="ph-docid">FR-YL-2026-001</div>
+        </div>
+        <div class="ph-center">
+          <div class="ph-year">2026 年</div>
+          <div class="ph-title">易璐 全国统一考试</div>
+          <div class="ph-sub">朋友关系鉴定卷（A卷）</div>
+        </div>
+        <div class="ph-right">
+          <div class="ph-score-label">得分</div>
+          <div class="ph-score-box"></div>
+        </div>
+      </div>
+
+      <!-- 密封线 -->
+      <div class="seal-line">
+        <div class="seal-content">
+          <span>考生姓名：<i>{{ takerName }}</i></span>
+          <span>准考证号：YL{{ String(Date.now()).slice(-8) }}</span>
+          <span>………………………… 密 封 线 内 不 要 答 题 …………………………</span>
+        </div>
+      </div>
+
+      <!-- 题目区域 -->
+      <div class="paper-body">
+        <div class="paper-instructions">
+          <strong>注意事项：</strong><br>
+          1. 本试卷共 {{ questions.length }} 题，均为单选题，请选出最符合<strong>易璐</strong>真实情况的选项。<br>
+          2. 点击选项即可选择，选中后可更改。<br>
+          3. 全部答完后点击"交卷"，系统将自动阅卷并生成鉴定证书。
+        </div>
+
+        <div class="question-card" :key="currentIdx">
+          <div class="qc-num">{{ currentIdx + 1 }}.</div>
+          <div class="qc-body">
+            <div class="qc-text">{{ currentQuestion.q }}</div>
+            <!-- 文字选项（含陷阱题） -->
+            <div v-if="currentQuestion.type !== 'image'" class="qc-options">
+              <div v-if="currentQuestion.type === 'trap' && trapFled.length"
+                   class="qc-trap-hint">你还有心吗 选A啊</div>
+              <div v-for="(opt, oi) in currentQuestion.options" :key="oi"
+                   v-show="currentQuestion.type !== 'trap' || !trapFled.includes(oi)"
+                   class="qc-opt"
+                   :class="{ selected: answers[currentIdx] === oi }"
+                   @click="currentQuestion.type === 'trap' ? handleTrapClick(oi) : answers[currentIdx] = oi">
+                <span class="qco-letter">{{ String.fromCharCode(65 + oi) }}</span>
+                <span class="qco-text">{{ opt }}</span>
+              </div>
+            </div>
+            <!-- 图片选项 -->
+            <div v-else class="qc-options-img">
+              <div v-for="(opt, oi) in currentQuestion.options" :key="oi"
+                   class="qc-opt-img"
+                   :class="{ selected: answers[currentIdx] === oi }"
+                   @click="answers[currentIdx] = oi">
+                <img :src="opt" :alt="'选项 ' + String.fromCharCode(65 + oi)" class="qco-img">
+                <span class="qco-letter-img">{{ String.fromCharCode(65 + oi) }}</span>
+                <span class="qco-caption">{{ currentQuestion.captions[oi] }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 底部导航 -->
+      <div class="paper-footer">
+        <div class="pf-nav">
+          <button @click="prevQ" :disabled="currentIdx === 0" class="btn-outline">◀ 上一题</button>
+          <div class="pf-dots">
+            <span v-for="(_, qi) in questions" :key="qi"
+                  class="pfd-dot"
+                  :class="{ done: answers[qi] >= 0, current: qi === currentIdx }"
+                  @click="currentIdx = qi">{{ qi + 1 }}</span>
+          </div>
+          <button v-if="currentIdx < questions.length - 1"
+                  @click="nextQ" class="btn-primary">下一题 ▶</button>
+          <button v-else @click="submitExam"
+                  :disabled="answers.some(a => a < 0)"
+                  class="btn-submit">交 卷</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 证书阶段 ==================== -->
+  <div v-if="stage==='cert'" class="stage cert-stage">
+
+    <div class="cert-page" id="certPage">
+      <div class="cert-bg-line cert-bg-line-1"></div>
+      <div class="cert-bg-line cert-bg-line-2"></div>
+
+      <div class="cert-top">
+        <div class="cert-emblem">★</div>
+        <div class="cert-org">中国朋友关系研究院</div>
+        <div class="cert-doctype">朋友鉴定结业证书</div>
+        <div class="cert-divider"></div>
+      </div>
+
+      <div class="cert-body">
+        <p class="cert-greeting">兹证明</p>
+        <p class="cert-name">{{ takerName }}</p>
+        <p class="cert-desc">
+          于 <strong>2026 年</strong> 参加<strong>「易璐全国统一考试」</strong>（朋友鉴定卷），
+          考试成绩 <strong>{{ score }}</strong> 分，
+          经中国朋友关系研究院学术委员会审定，授予如下鉴定等级：
+        </p>
+        <p class="cert-rank" :style="{color: rankInfo.color}">{{ rankInfo.rank }}</p>
+        <p class="cert-comment" v-html="rankInfo.comment"></p>
+      </div>
+
+      <div class="cert-footer">
+        <div class="cert-seal-area">
+          <div class="cert-seal" :style="{borderColor:rankInfo.color,color:rankInfo.color}">
+            {{ rankInfo.seal }}
+          </div>
+        </div>
+        <div class="cert-sign-area">
+          <div class="cert-sign-line">
+            <span class="cert-sign-label">鉴定委员会（盖章）</span>
+          </div>
+          <div class="cert-date">
+            二〇二六年{{ toChineseNum(new Date().getMonth()+1) }}月{{ toChineseNum(new Date().getDate()) }}日
+          </div>
+        </div>
+        <div class="cert-no">证书编号：FR-YL-2026-{{ String(Date.now()).slice(-6) }}</div>
+      </div>
+
+      <div class="cert-watermark">YILU-PENGYOU-JIANDING</div>
+    </div>
+
+    <div class="cert-actions">
+      <button @click="retry" class="btn-outline">再考一次</button>
+      <button @click="shareCert" class="btn-primary">截图 / 分享证书</button>
+    </div>
+  </div>
+
+</div>
+
+<script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

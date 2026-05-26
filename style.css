@@ -1,0 +1,423 @@
+/* ================================================
+   易璐全国统一考试 · 绝密试卷
+   中国朋友关系研究院
+   ================================================ */
+
+/* ---------- Reset & Base ---------- */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:'KaiTi','STKaiti','楷体','PingFang SC','Hiragino Sans GB','Microsoft YaHei',serif;
+  background:#f5f0e8;
+  color:#1a1a1a;
+  min-height:100vh;
+  -webkit-font-smoothing:antialiased;
+  background-image:
+    repeating-linear-gradient(0deg,transparent,transparent 28px,rgba(0,0,0,.015) 28px,rgba(0,0,0,.015) 29px);
+}
+
+/* ---------- 全局水印 ---------- */
+.watermark-layer{
+  position:fixed;inset:-20%;z-index:9999;pointer-events:none;
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:60px 80px;padding:40px;overflow:hidden;
+  transform:rotate(-25deg);opacity:.06;
+}
+.watermark-text{
+  font-size:20px;font-weight:900;color:#000;white-space:nowrap;
+  letter-spacing:4px;font-family:'PingFang SC','Microsoft YaHei',sans-serif;
+  user-select:none;-webkit-user-select:none;
+}
+
+/* ---------- Stages ---------- */
+.stage{min-height:100vh;padding:24px 16px 48px;display:flex;flex-direction:column;align-items:center}
+.cover-stage{justify-content:center;gap:20px;padding-top:32px;padding-bottom:32px}
+
+/* ---------- Buttons ---------- */
+.btn-primary{
+  display:inline-flex;align-items:center;justify-content:center;
+  padding:14px 28px;font-size:16px;font-weight:700;
+  background:linear-gradient(135deg,#8b0000,#b71c1c);color:#fff;
+  border:none;border-radius:4px;cursor:pointer;letter-spacing:3px;
+  transition:filter .2s;font-family:inherit;
+  -webkit-tap-highlight-color:transparent;touch-action:manipulation;
+}
+.btn-primary:hover{filter:brightness(1.15)}
+.btn-primary:active{filter:brightness(.9)}
+.btn-primary:disabled{opacity:.35;cursor:not-allowed;filter:none}
+
+.btn-outline{
+  display:inline-flex;align-items:center;justify-content:center;
+  padding:14px 28px;font-size:16px;font-weight:600;
+  background:transparent;color:#8b0000;border:2px solid #8b0000;
+  border-radius:4px;cursor:pointer;letter-spacing:2px;
+  transition:background .2s;font-family:inherit;
+  -webkit-tap-highlight-color:transparent;touch-action:manipulation;
+}
+.btn-outline:hover{background:rgba(139,0,0,.05)}
+.btn-outline:active{background:rgba(139,0,0,.1)}
+.btn-outline:disabled{opacity:.3;cursor:not-allowed}
+
+.btn-seal{
+  display:inline-flex;align-items:center;justify-content:center;
+  padding:14px 32px;font-size:17px;font-weight:900;
+  background:linear-gradient(135deg,#8b0000,#c62828);color:#fff;
+  border:none;border-radius:4px;cursor:pointer;letter-spacing:6px;
+  box-shadow:0 4px 20px rgba(139,0,0,.3);
+  transition:transform .15s,box-shadow .15s;font-family:inherit;
+  white-space:nowrap;
+  -webkit-tap-highlight-color:transparent;touch-action:manipulation;
+}
+.btn-seal:hover{transform:translateY(-1px);box-shadow:0 6px 28px rgba(139,0,0,.4)}
+.btn-seal:active{transform:translateY(0);box-shadow:0 2px 12px rgba(139,0,0,.2)}
+.btn-seal:disabled{opacity:.35;cursor:not-allowed;transform:none;box-shadow:none}
+
+.btn-submit{
+  display:inline-flex;align-items:center;justify-content:center;
+  padding:14px 40px;font-size:17px;font-weight:900;
+  background:linear-gradient(135deg,#8b0000,#c62828);color:#fff;
+  border:none;border-radius:4px;cursor:pointer;letter-spacing:8px;
+  box-shadow:0 4px 24px rgba(139,0,0,.35);
+  transition:transform .15s,box-shadow .15s;font-family:inherit;
+  -webkit-tap-highlight-color:transparent;touch-action:manipulation;
+}
+.btn-submit:hover{transform:translateY(-1px);box-shadow:0 6px 30px rgba(139,0,0,.45)}
+.btn-submit:active{transform:translateY(0);box-shadow:0 2px 12px rgba(139,0,0,.2)}
+.btn-submit:disabled{opacity:.35;cursor:not-allowed;transform:none;box-shadow:none}
+
+/* ================================================
+   COVER — 绝密档案袋
+   ================================================ */
+.envelope{
+  max-width:520px;width:100%;border:4px solid #8b0000;
+  background:linear-gradient(180deg,#fffef9 0%,#fefcf5 100%);
+  box-shadow:0 8px 40px rgba(0,0,0,.12);
+}
+.envelope-seal-top{
+  text-align:center;font-size:20px;font-weight:900;color:#8b0000;
+  letter-spacing:12px;padding:14px 0;border-bottom:2px solid #8b0000;
+  background:linear-gradient(180deg,rgba(139,0,0,.06),transparent);
+}
+.envelope-body{
+  padding:28px 20px 32px;text-align:center;
+}
+.envelope-badge{
+  display:inline-block;padding:4px 18px;border:1.5px solid #8b0000;
+  color:#8b0000;font-size:13px;letter-spacing:4px;margin-bottom:20px;
+  border-radius:2px;
+}
+.envelope-title{line-height:1.8}
+.et-year{display:block;font-size:13px;color:#666;letter-spacing:8px;margin-bottom:4px}
+.et-main{display:block;font-size:44px;font-weight:900;color:#1a1a1a;letter-spacing:16px}
+.et-main-sub{display:block;font-size:30px;font-weight:900;color:#8b0000;letter-spacing:8px;margin-top:2px}
+.et-sub{display:block;font-size:14px;color:#999;letter-spacing:2px;margin-top:8px}
+.envelope-doc-id{
+  margin-top:14px;font-size:12px;color:#999;letter-spacing:2px;
+  font-family:'Courier New',monospace;
+}
+.envelope-stamps{
+  display:flex;gap:14px;justify-content:center;margin-top:18px;
+}
+.estamp{
+  width:50px;height:50px;border:2.5px solid;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:900;letter-spacing:2px;
+  transform:rotate(-18deg);opacity:.85;
+}
+.estamp-red{border-color:#c62828;color:#c62828}
+.estamp-blue{border-color:#1565c0;color:#1565c0}
+
+.exam-meta{
+  max-width:520px;width:100%;display:grid;
+  grid-template-columns:1fr 1fr;gap:2px;
+  background:#e8e0d0;border:2px solid #d5c8b0;padding:2px;
+}
+.meta-item{
+  background:#fffef9;padding:10px 14px;font-size:14px;line-height:1.5;
+}
+.meta-item span{display:block;font-size:11px;color:#999;margin-bottom:2px;letter-spacing:2px}
+
+.new-exam-panel{max-width:520px;width:100%;text-align:center}
+.nel-label{font-size:15px;color:#555;display:block;margin-bottom:12px;letter-spacing:1px}
+.nel-label strong{color:#8b0000;font-size:17px}
+.nel-row{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+.exam-input{
+  flex:1;min-width:160px;padding:14px 16px;font-size:18px;
+  border:2px solid #d5c8b0;border-radius:4px;outline:none;
+  text-align:center;letter-spacing:4px;background:#fffef9;
+  font-family:inherit;transition:border .2s;
+  -webkit-appearance:none;-webkit-tap-highlight-color:transparent;
+}
+.exam-input:focus{border-color:#8b0000}
+.exam-input::placeholder{color:#ccc;letter-spacing:1px}
+
+/* ================================================
+   QUIZ — 试卷
+   ================================================ */
+.quiz-stage{background:#e8e0d0;padding:16px}
+
+.paper{
+  max-width:680px;width:100%;background:#fffef9;
+  border:1px solid #d5c8b0;
+  box-shadow:0 4px 24px rgba(0,0,0,.08);
+}
+
+/* 试卷头 */
+.paper-header{
+  display:flex;align-items:center;padding:18px 20px 14px;
+  border-bottom:3px double #8b0000;
+}
+.ph-left{font-size:11px;color:#8b0000;letter-spacing:2px;flex-shrink:0}
+.ph-secret{font-weight:900;margin-bottom:4px}
+.ph-docid{color:#999;font-size:10px;font-family:'Courier New',monospace}
+.ph-center{flex:1;text-align:center;min-width:0}
+.ph-year{font-size:12px;color:#666;letter-spacing:4px}
+.ph-title{font-size:20px;font-weight:900;letter-spacing:4px;margin:2px 0}
+.ph-sub{font-size:12px;color:#8b0000;letter-spacing:2px}
+.ph-right{text-align:center;flex-shrink:0;margin-left:12px}
+.ph-score-label{font-size:11px;color:#999;letter-spacing:2px}
+.ph-score-box{
+  width:48px;height:36px;border:2px solid #8b0000;margin-top:4px;
+}
+
+/* 密封线 */
+.seal-line{
+  padding:5px 20px;font-size:10px;color:#8b0000;opacity:.7;
+  border-bottom:1px dashed #d5c8b0;letter-spacing:1px;overflow:hidden;
+}
+.seal-content{display:flex;gap:16px;white-space:nowrap;flex-wrap:wrap}
+.seal-content i{font-style:normal;font-weight:700;color:#1a1a1a;border-bottom:1px solid #1a1a1a;padding:0 6px}
+
+/* 题目区域 */
+.paper-body{padding:18px 20px;min-height:320px}
+.paper-instructions{
+  font-size:12px;color:#888;line-height:2;margin-bottom:20px;
+  padding:10px 14px;background:rgba(139,0,0,.03);
+  border-left:3px solid #8b0000;
+}
+.paper-instructions strong{color:#8b0000}
+
+.question-card{display:flex;gap:12px}
+.qc-num{
+  font-size:18px;font-weight:900;color:#8b0000;
+  min-width:30px;text-align:center;line-height:1.7;
+}
+.qc-body{flex:1;min-width:0}
+.qc-text{font-size:19px;font-weight:700;line-height:1.7;margin-bottom:16px}
+.qc-options{display:flex;flex-direction:column;gap:8px}
+.qc-opt{
+  display:flex;align-items:flex-start;gap:10px;padding:12px 14px;
+  border:1.5px solid #e0d8c8;border-radius:2px;cursor:pointer;
+  transition:border-color .15s,background .15s;line-height:1.6;font-size:16px;
+  -webkit-tap-highlight-color:transparent;touch-action:manipulation;
+  user-select:none;-webkit-user-select:none;
+}
+.qc-opt:hover{border-color:#c62828}
+.qc-opt:active{background:rgba(198,40,40,.05)}
+.qc-opt.selected{border-color:#8b0000;background:rgba(139,0,0,.06)}
+.qco-letter{
+  width:28px;height:28px;border-radius:50%;border:1.5px solid #d5c8b0;
+  display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:14px;color:#888;flex-shrink:0;
+  transition:all .15s;
+}
+.qc-opt.selected .qco-letter{background:#8b0000;border-color:#8b0000;color:#fff}
+.qc-trap-hint {
+  text-align: center; font-size: 20px; font-weight: 900; color: #8b0000;
+  padding: 40px 16px; letter-spacing: 4px; line-height: 1.8;
+}
+
+/* 图片选项 */
+.qc-options-img{
+  display:grid;grid-template-columns:1fr 1fr;gap:8px;
+}
+.qc-opt-img{
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+  padding:8px 6px;border:2px solid #e0d8c8;border-radius:4px;
+  cursor:pointer;transition:border-color .15s,background .15s;
+  -webkit-tap-highlight-color:transparent;touch-action:manipulation;
+  user-select:none;-webkit-user-select:none;
+}
+.qc-opt-img:hover{border-color:#c62828}
+.qc-opt-img:active{background:rgba(198,40,40,.05)}
+.qc-opt-img.selected{border-color:#8b0000;background:rgba(139,0,0,.06)}
+.qco-img{
+  width:80%;max-width:160px;aspect-ratio:1/1;object-fit:cover;border-radius:6px;
+  background:#f5f5f5;
+}
+.qco-letter-img{
+  font-size:12px;font-weight:700;color:#888;
+  background:#f5f5f5;padding:2px 8px;border-radius:999px;
+}
+.qc-opt-img.selected .qco-letter-img{background:#8b0000;color:#fff}
+.qco-caption{
+  font-size:11px;color:#999;text-align:center;line-height:1.5;
+  word-break:break-all;
+}
+
+/* 底部导航 */
+.paper-footer{padding:14px 20px;border-top:1px solid #e0d8c8}
+.pf-nav{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.pf-dots{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+.pfd-dot{
+  width:30px;height:30px;border-radius:50%;border:1.5px solid #d5c8b0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;color:#999;cursor:pointer;transition:all .15s;
+  -webkit-tap-highlight-color:transparent;touch-action:manipulation;
+}
+.pfd-dot.current{border-color:#8b0000;color:#8b0000;font-weight:700;transform:scale(1.15)}
+.pfd-dot.done{background:#8b0000;border-color:#8b0000;color:#fff}
+
+/* ================================================
+   CERT — 结业证书
+   ================================================ */
+.cert-stage{gap:20px}
+
+.cert-page{
+  max-width:600px;width:100%;background:linear-gradient(175deg,#fffef7 0%,#fdfbef 50%,#fefdf5 100%);
+  border:6px double #8b0000;padding:36px 32px 28px;
+  position:relative;overflow:hidden;
+  box-shadow:0 8px 40px rgba(0,0,0,.1);
+}
+.cert-bg-line{
+  position:absolute;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,transparent,rgba(139,0,0,.06),transparent);
+}
+.cert-bg-line-1{top:80px}
+.cert-bg-line-2{top:160px}
+
+.cert-top{text-align:center;position:relative;z-index:1}
+.cert-emblem{
+  font-size:40px;color:#8b0000;margin-bottom:4px;
+  text-shadow:0 2px 8px rgba(139,0,0,.15);
+}
+.cert-org{font-size:16px;color:#8b0000;letter-spacing:4px;font-weight:700}
+.cert-doctype{font-size:26px;font-weight:900;letter-spacing:8px;margin-top:8px}
+.cert-divider{
+  width:60px;height:2px;background:linear-gradient(90deg,transparent,#8b0000,transparent);
+  margin:12px auto;
+}
+
+.cert-body{position:relative;z-index:1;text-align:center;margin-top:4px}
+.cert-greeting{font-size:15px;color:#666;margin-bottom:4px}
+.cert-name{
+  font-size:40px;font-weight:900;color:#8b0000;letter-spacing:10px;
+  margin-bottom:14px;font-family:'KaiTi','STKaiti','楷体',serif;
+}
+.cert-desc{font-size:14px;color:#444;line-height:2.2;margin-bottom:14px;padding:0 6px}
+.cert-rank{
+  font-size:44px;font-weight:900;letter-spacing:12px;
+  margin-bottom:8px;font-family:'KaiTi','STKaiti','楷体',serif;
+}
+.cert-comment{font-size:13px;color:#888;line-height:2}
+
+.cert-footer{position:relative;z-index:1;margin-top:24px}
+.cert-seal-area{text-align:center;margin-bottom:14px}
+.cert-seal{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:68px;height:68px;border:3px solid;border-radius:50%;
+  font-size:15px;font-weight:900;letter-spacing:3px;
+  transform:rotate(-15deg);
+  animation:stampIn .6s cubic-bezier(.34,1.56,.64,1) both;
+}
+@keyframes stampIn{
+  0%{transform:scale(2.5) rotate(-30deg);opacity:0}
+  60%{transform:scale(.88) rotate(-18deg);opacity:1}
+  100%{transform:scale(1) rotate(-15deg)}
+}
+.cert-sign-area{display:flex;justify-content:flex-end;flex-direction:column;align-items:flex-end}
+.cert-sign-line{text-align:right;padding-right:8px;margin-bottom:2px}
+.cert-sign-label{font-size:12px;color:#999;letter-spacing:2px}
+.cert-date{font-size:14px;color:#666;letter-spacing:2px;text-align:right;margin-top:4px}
+.cert-no{
+  font-size:10px;color:#bbb;text-align:left;margin-top:10px;
+  font-family:'Courier New',monospace;letter-spacing:1px;
+}
+
+.cert-watermark{
+  position:absolute;bottom:12px;left:0;right:0;text-align:center;
+  font-size:32px;font-weight:900;color:rgba(139,0,0,.02);
+  letter-spacing:4px;pointer-events:none;white-space:nowrap;overflow:hidden;
+  font-family:Arial,sans-serif;
+}
+
+.cert-actions{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+
+/* ================================================
+   Responsive — 手机端
+   ================================================ */
+@media(max-width:520px){
+  .stage{padding:12px 10px 36px}
+  .cover-stage{padding-top:20px;gap:16px}
+
+  /* 封面 */
+  .envelope{border-width:3px}
+  .envelope-seal-top{font-size:16px;letter-spacing:8px;padding:10px 0}
+  .envelope-body{padding:20px 14px 24px}
+  .envelope-badge{font-size:11px;letter-spacing:2px;padding:3px 12px}
+  .et-main{font-size:34px;letter-spacing:10px}
+  .et-main-sub{font-size:22px;letter-spacing:4px}
+  .et-sub{font-size:12px}
+  .envelope-stamps{gap:10px;margin-top:14px}
+  .estamp{width:42px;height:42px;font-size:11px;letter-spacing:1px}
+  .exam-meta{grid-template-columns:1fr}
+
+  /* 答题 */
+  .quiz-stage{padding:8px}
+  .paper-header{padding:12px 12px 10px}
+  .ph-left{font-size:10px}
+  .ph-title{font-size:16px;letter-spacing:2px}
+  .ph-sub{font-size:11px}
+  .ph-right{display:none}
+  .seal-line{display:none}
+  .paper-body{padding:14px 12px;min-height:260px}
+  .paper-instructions{font-size:11px;line-height:1.8;padding:8px 10px}
+  .qc-text{font-size:17px}
+  .qc-opt{font-size:15px;padding:10px 12px}
+  .qco-letter{width:26px;height:26px;font-size:13px}
+  .paper-footer{padding:12px}
+  .pf-dots{gap:4px}
+  .pfd-dot{width:28px;height:28px;font-size:11px}
+  .btn-primary,.btn-outline{font-size:14px;padding:10px 18px;letter-spacing:1px}
+  .btn-submit{font-size:15px;padding:12px 28px;letter-spacing:4px}
+  .btn-seal{font-size:15px;padding:12px 24px;letter-spacing:3px}
+
+  /* 证书 */
+  .cert-page{padding:24px 16px;border-width:4px}
+  .cert-emblem{font-size:32px}
+  .cert-org{font-size:14px;letter-spacing:2px}
+  .cert-doctype{font-size:20px;letter-spacing:4px}
+  .cert-name{font-size:30px;letter-spacing:6px}
+  .cert-rank{font-size:32px;letter-spacing:6px}
+  .cert-desc{font-size:13px}
+  .cert-seal{width:56px;height:56px;font-size:13px}
+  .cert-watermark{font-size:20px;letter-spacing:2px}
+  .cert-actions{flex-direction:column;align-items:center}
+
+  /* 图片选项 */
+  .qc-options-img{gap:8px}
+
+  /* 输入 */
+  .nel-row{flex-direction:column;align-items:center}
+  .exam-input{width:100%}
+  .btn-seal{width:100%}
+}
+
+/* 平板竖屏 */
+@media(min-width:521px) and (max-width:768px){
+  .stage{padding:20px 16px 40px}
+  .et-main{font-size:38px}
+  .et-main-sub{font-size:26px}
+  .cert-page{padding:32px 24px}
+  .cert-name{font-size:36px}
+  .cert-rank{font-size:38px}
+  .seal-line{display:none}
+}
+
+@media print{
+  body{background:#fff}
+  .stage{display:none!important}
+  .cert-stage{display:flex!important}
+  .cert-actions{display:none!important}
+  .cert-page{box-shadow:none;border-width:3px}
+}
